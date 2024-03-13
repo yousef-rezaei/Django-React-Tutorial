@@ -9,6 +9,7 @@ import {useForm} from 'react-hook-form'
 import AxiosInstance from './Axios'
 import Dayjs from 'dayjs'
 import {useNavigate, useParams} from 'react-router-dom'
+import MyMultiSelectField from './forms/MyMultiSelectField'
 
 const Edit = () => {
   const MyParam = useParams()
@@ -16,6 +17,7 @@ const Edit = () => {
 
 
   const [projectmanager,setProjectmanager] = useState()
+  const [employees,setEmployees] = useState()
   const [loading,setLoading] = useState(true)
 
   const hardcoded_options = [
@@ -33,10 +35,16 @@ const Edit = () => {
 
     })
 
+    AxiosInstance.get(`employees/`).then((res) =>{
+      setEmployees(res.data)
+      console.log(res.data)
+    })
+
     AxiosInstance.get(`project/${MyId}`).then((res) =>{
       console.log(res.data)
       setValue('name',res.data.name)
       setValue('status',res.data.status)
+      setValue('employees',res.data.employees)
       setValue('projectmanager',res.data.projectmanager)
       setValue('comments',res.data.comments)
       setValue('start_date',Dayjs(res.data.start_date))
@@ -59,7 +67,7 @@ const Edit = () => {
   }
 
   const {handleSubmit, setValue, control} = useForm({defaultValues:defaultValues})
-    const submission = (data) => 
+  const submission = (data) => 
     {
       const StartDate = Dayjs(data.start_date["$d"]).format("YYYY-MM-DD")
       const EndDate = Dayjs(data.end_date["$d"]).format("YYYY-MM-DD")
@@ -67,6 +75,7 @@ const Edit = () => {
       AxiosInstance.put( `project/${MyId}/`,{
         name: data.name,
         projectmanager: data.projectmanager,
+        employees: data.employees,
         status: data.status,
         comments: data.comments, 
         start_date: StartDate, 
@@ -146,6 +155,18 @@ const Edit = () => {
               />
 
                 
+
+          </Box>
+
+          <Box sx={{display:'flex', justifyContent:'space-around', marginTop: '40px'}}> 
+
+              <MyMultiSelectField
+                  label="Employees"
+                  name="employees"
+                  control={control}
+                  width={'30%'}
+                  options = {employees}
+              />
 
           </Box>
 

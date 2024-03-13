@@ -11,10 +11,12 @@ import Dayjs from 'dayjs'
 import {useNavigate} from 'react-router-dom'
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
+import MyMultiSelectField from './forms/MyMultiSelectField'
 
 const Create = () => {
 
   const [projectmanager,setProjectmanager] = useState()
+  const [employees,setEmployees] = useState()
   const [loading,setLoading] = useState(true)
 
   const hardcoded_options = [
@@ -27,6 +29,11 @@ const Create = () => {
   const GetData = () => {
     AxiosInstance.get(`projectmanager/`).then((res) =>{
       setProjectmanager(res.data)
+      console.log(res.data)
+    });
+
+    AxiosInstance.get(`employees/`).then((res) =>{
+      setEmployees(res.data)
       console.log(res.data)
       setLoading(false)
     })
@@ -49,6 +56,7 @@ const Create = () => {
     name: yup.string().required('Name is a required field'),
     projectmanager: yup.string().required('Project manager is a required field'),
     status: yup.string().required('Status is a required field'),
+    employees: yup.array().min(1, 'Pick at least one option from the select field'),
     comments: yup.string(), 
     start_date: yup.date().required('Start date is a required field'), 
     end_date: yup.date().required('End date is a required field').min(yup.ref('start_date'),'The end date can not be before the start date'), 
@@ -66,6 +74,7 @@ const Create = () => {
       AxiosInstance.post( `project/`,{
         name: data.name,
         projectmanager: data.projectmanager,
+        employees: data.employees,
         status: data.status,
         comments: data.comments, 
         start_date: StartDate, 
@@ -151,6 +160,18 @@ const Create = () => {
                 />
 
     
+          </Box>
+
+          <Box sx={{display:'flex', justifyContent:'space-around', marginTop: '40px'}}> 
+
+            <MyMultiSelectField
+                label="Employees"
+                name="employees"
+                control={control}
+                width={'30%'}
+                options = {employees}
+            />
+
           </Box>
 
           <Box sx={{display:'flex', justifyContent:'start', marginTop:'40px'}}> 

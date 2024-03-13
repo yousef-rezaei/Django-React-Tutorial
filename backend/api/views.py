@@ -17,6 +17,16 @@ class ProjectManagerViewset(viewsets.ViewSet):
         queryset = ProjectManager.objects.all()
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
+    
+class EmployeesViewset(viewsets.ViewSet):
+    permission_classes = [permissions.AllowAny]
+    queryset = Employees.objects.all()
+    serializer_class = EmployeesSerializer
+
+    def list(self, request):
+        queryset = Employees.objects.all()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
 
 
 class ProjectViewset(viewsets.ViewSet):
