@@ -9,7 +9,7 @@ SECRET_KEY = os.environ['MY_SECRET_KEY']
 
 BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MIDDLEWARE = [
