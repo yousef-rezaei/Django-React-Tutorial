@@ -55,4 +55,4 @@ DATABASES = {
     }
 }
 
-STATIC_ROOt = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
