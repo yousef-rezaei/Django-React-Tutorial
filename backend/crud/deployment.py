@@ -1,17 +1,12 @@
 import os
-from .settings import *
-from pathlib import Path
-# from .settings import BASE_DIR
+# from .settings import *
+from .settings import BASE_DIR
 
 ALLOWED_HOSTS = [os.environ['WEBSITE_HOSTNAME']]
 CSRF_TRUSTED_ORIGINS = ['https://'+os.environ['WEBSITE_HOSTNAME']]
 DEBUG = False
 SECRET_KEY = os.environ['MY_SECRET_KEY']
 
-BASE_DIR = Path(__file__).resolve().parent.parent
-
-# STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -59,6 +54,5 @@ DATABASES = {
        
     }
 }
-# Static files (CSS, JavaScript, Images)
+# we dont need beacuse we get it from settings.py
 # STATIC_ROOT = BASE_DIR / 'staticfiles'
-# STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
