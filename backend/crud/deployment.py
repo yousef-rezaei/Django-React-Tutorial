@@ -54,5 +54,5 @@ DATABASES = {
        
     }
 }
-
+# Static files (CSS, JavaScript, Images)
 STATIC_ROOT = BASE_DIR / 'staticfiles'
