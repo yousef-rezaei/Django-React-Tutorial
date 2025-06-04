@@ -46,17 +46,26 @@ jobs:
           cd backend
           python manage.py collectstatic --noinput
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-      - name: Zip artifact for deployment
-        run: |
-          cd backend
-          zip release.zip ./* -r
+      # - name: Zip artifact for deployment
+      #   run: |
+      #     cd backend
+      #     zip release.zip ./* -r
+      # - name: Upload artifact for deployment jobs
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: python-app
+      #     path: |
+      #       backend/release.zip
+      #\       !venv/
+      
+
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v4
         with:
           name: python-app
           path: |
-            backend/release.zip
-            !venv/
+            backend/
+            !backend/venv/
 
   deploy:
     runs-on: ubuntu-latest
@@ -74,8 +83,9 @@ jobs:
         with:
           name: python-app
 
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
+      # - name: Unzip artifact for deployment
+      #   run: unzip release.zip
+  
 
       - name: Login to Azure
         uses: azure/login@v2
@@ -83,6 +93,7 @@ jobs:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_03DE591971E343FDB03FB6D10BCEF2F2 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_4AF0CA476DC0464686B5171F8F43A370 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B69480C5348545C5B7337955D28A787D }}
+      
 
       - name: "Deploy to Azure Web App"
         uses: azure/webapps-deploy@v3
@@ -90,3 +101,11 @@ jobs:
         with:
           app-name: "mywebservice"
           slot-name: "Production"
+          package: ./backend
+
+      # - name: "Deploy to Azure Web App"
+      #   uses: azure/webapps-deploy@v3
+      #   id: deploy-to-webapp
+      #   with:
+      #     app-name: "mywebservice"
+      #     slot-name: "Production"
