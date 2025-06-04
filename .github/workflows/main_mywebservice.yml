@@ -101,7 +101,8 @@ jobs:
         with:
           app-name: "mywebservice"
           slot-name: "Production"
-          package: ./backend
+          package: .
+
 
       # - name: "Deploy to Azure Web App"
       #   uses: azure/webapps-deploy@v3
